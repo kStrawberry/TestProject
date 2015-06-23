@@ -239,6 +239,9 @@ public class CBattleRoom : MonoBehaviour {
         {
             gameResult.SetActive(true);
             gameResult.GetComponent<CGameResult>().SetPlayerCellCount(players[0].cell_indexes.Count, players[1].cell_indexes.Count);
+
+            // [6/23/2015 kain0024] 다시 시작하기 편하게 초기화 해 놓고 active(false) 한다.
+            reset();
             this.gameObject.SetActive(false);
         }
         
