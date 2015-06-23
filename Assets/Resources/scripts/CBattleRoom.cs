@@ -11,27 +11,25 @@ public class CBattleRoom : MonoBehaviour {
 
 	List<Texture> img_players;
 	Texture background;
-	Texture blank_image;
 	Texture game_board;
 	GUISkin blank_skin;
 	
-	Texture graycell;
 	Texture focus_cell;
 	Texture button_playagain;
 	
 	List<short> available_attack_cells;
 	byte current_player_index;
 	byte step;
+
+    GameObject gameResult;
 	
 	void Awake()
 	{
 		this.table_board = new List<short>();
 		this.available_attack_cells = new List<short>();
-		this.graycell = Resources.Load("images/graycell") as Texture;
 		this.focus_cell = Resources.Load("images/border") as Texture;
 		
 		this.blank_skin = Resources.Load("blank_skin") as GUISkin;
-		this.blank_image = Resources.Load("images/blank") as Texture;
 		this.game_board = Resources.Load("images/gameboard") as Texture;
 		this.background = Resources.Load("images/gameboard_bg") as Texture;
 		this.img_players = new List<Texture>();
@@ -50,7 +48,10 @@ public class CBattleRoom : MonoBehaviour {
 		}
 
 		this.board = new List<short>();
-		
+        gameResult = GameObject.Find("GameResult");
+        if(gameResult != null)
+            gameResult.SetActive(false);
+
 		reset ();
 	}
 	
@@ -103,7 +104,6 @@ public class CBattleRoom : MonoBehaviour {
 		float scaled_height = 480.0f * ratio;
 		float gap_height = Screen.height - scaled_height;
 		
-		float outline_left = 0;
 		float outline_top = gap_height * 0.5f;
 		float outline_width = Screen.width;
 		float outline_height = scaled_height;
@@ -126,7 +126,6 @@ public class CBattleRoom : MonoBehaviour {
 		GUI.BeginGroup(new Rect(hor_center-half_celloutline_width, 
 			ver_center-half_celloutline_width + outline_top, celloutline_width, celloutline_width));
 		
-		List<int> current_turn = new List<int>();
 		short index = 0;
 		for (int row=0; row<CBattleRoom.COL_COUNT; ++row)
 		{
@@ -236,7 +235,14 @@ public class CBattleRoom : MonoBehaviour {
 	
 	void game_over()
 	{
-		Debug.Log("GameOver!");
+        if (gameResult != null)
+        {
+            gameResult.SetActive(true);
+            gameResult.GetComponent<CGameResult>().SetPlayerCellCount(players[0].cell_indexes.Count, players[1].cell_indexes.Count);
+            this.gameObject.SetActive(false);
+        }
+        
+		//Debug.Log("GameOver!");
 	}
 	
 	void phase_end()

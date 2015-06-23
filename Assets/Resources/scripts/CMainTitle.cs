@@ -11,20 +11,17 @@ public class CMainTitle : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		
-		
-		
 		this.bg = Resources.Load("images/title_blue") as Texture;
 		this.battleroom = GameObject.Find("BattleRoom");
-		this.battleroom.SetActiveRecursively (false);
+		this.battleroom.SetActive(false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButtonDown(0))
 		{
-			this.battleroom.SetActiveRecursively(true);
-			gameObject.SetActiveRecursively(false);
+            this.battleroom.SetActive(true);
+            gameObject.SetActive(false);
 		}
 	}
 	
