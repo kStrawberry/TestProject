@@ -24,8 +24,8 @@ public class CGameResult : MonoBehaviour {
         img_bg = Resources.Load("images/graycell") as Texture;
         button_playagain = Resources.Load("images/playagain") as Texture;
         button_exitgame = Resources.Load("images/exitgame") as Texture;
-
-        this.gameObject.SetActive(false);
+	battleRoom = GameObject.Find("BattleRoom");
+        //this.gameObject.SetActive(false);
 
     }
 	// Use this for initialization
