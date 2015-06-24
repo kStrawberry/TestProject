@@ -1,0 +1,13 @@
+Library
+obj
+ProjectSettings
+Assembly-CSharp.csproj
+Assembly-CSharp-vs.csproj
+TestProject.sln
+TestProject-csharp.sln
+TestProject-csharp.v12.suo
+UnityVS.TestProject.CSharp.csproj
+UnityVS.TestProject.sln
+UnityVS.TestProject.v12.suo
+Assets/UnityVS
+Assets/UnityVS.meta
