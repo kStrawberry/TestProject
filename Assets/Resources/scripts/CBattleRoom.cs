@@ -22,66 +22,70 @@ public class CBattleRoom : MonoBehaviour {
 	byte step;
 
     GameObject gameResult;
-	
+
 	void Awake()
 	{
-		this.table_board = new List<short>();
-		this.available_attack_cells = new List<short>();
-		this.focus_cell = Resources.Load("images/border") as Texture;
+		table_board = new List<short>();
+		available_attack_cells = new List<short>();
+		focus_cell = Resources.Load("images/border") as Texture;
 		
-		this.blank_skin = Resources.Load("blank_skin") as GUISkin;
-		this.game_board = Resources.Load("images/gameboard") as Texture;
-		this.background = Resources.Load("images/gameboard_bg") as Texture;
-		this.img_players = new List<Texture>();
-		this.img_players.Add(Resources.Load("images/blue") as Texture);
-		this.img_players.Add(Resources.Load("images/red") as Texture);
+		blank_skin = Resources.Load("blank_skin") as GUISkin;
+		game_board = Resources.Load("images/gameboard") as Texture;
+		background = Resources.Load("images/gameboard_bg") as Texture;
+		img_players = new List<Texture>();
+		img_players.Add(Resources.Load("images/blue") as Texture);
+		img_players.Add(Resources.Load("images/red") as Texture);
 		
-		this.button_playagain = Resources.Load("images/playagain") as Texture;
+		button_playagain = Resources.Load("images/playagain") as Texture;
 		
-		this.players = new List<CPlayer>();
+		players = new List<CPlayer>();
 		for (byte i=0; i<2; ++i)
 		{
 			GameObject obj = new GameObject(string.Format("player{0}", i));
 			CPlayer player = obj.AddComponent<CPlayer>();
 			player.initialize(i);
-			this.players.Add(player);
+			players.Add(player);
 		}
 
-		this.board = new List<short>();
+		board = new List<short>();
         gameResult = GameObject.Find("GameResult");
         if(gameResult != null)
             gameResult.SetActive(false);
 
 		reset ();
-	}
+
+        
+	}    
 	
 	void reset()
 	{
-		this.players.ForEach (obj => obj.clear());
-		this.players[0].add(6);
-		this.players[0].add(42);
-		//this.players[0].change_to_agent();
+		players.ForEach (obj => obj.clear());
+		players[0].add(6);
+		players[0].add(42);
+		//players[0].change_to_agent();
 		
-		this.players[1].add(0);
-		this.players[1].add(48);
-		this.players[1].change_to_agent();
+		players[1].add(0);
+		players[1].add(48);
+		players[1].change_to_agent();
 		
-		this.board.Clear();
-		this.table_board.Clear();
+		board.Clear();
+		table_board.Clear();
 		for (int i=0; i<COL_COUNT * COL_COUNT; ++i)
 		{
-			this.board.Add(short.MaxValue);
-			this.table_board.Add((short)i);
+			board.Add(short.MaxValue);
+			table_board.Add((short)i);
 		}
 		
-		this.players.ForEach(obj => {
-			obj.cell_indexes.ForEach(cell => {
-				this.board[cell] = obj.player_index;
+		players.ForEach(obj =>
+        {
+			obj.cell_indexes.ForEach(cell =>
+            {
+				board[cell] = obj.player_index;
 			});
 		});
 		
-		this.current_player_index = 0;
-		this.step = 0;
+		current_player_index = 0;
+		step = 0;
 	}
 	
 	float ratio = 1.0f;
@@ -89,10 +93,12 @@ public class CBattleRoom : MonoBehaviour {
 	{
 		ratio = Screen.width / 800.0f;
 		
-		GUI.skin = this.blank_skin;
+		GUI.skin = blank_skin;
 		draw_board();
-		
-		if (GUI.Button(new Rect(10,10,80 * ratio, 80 * ratio), this.button_playagain))
+
+        GUI.TextField(new Rect(40 * ratio, 350, 90 * ratio, 30 * ratio), "Red : " + players[1].cell_indexes.Count.ToString(), GUI.skin.button);
+        GUI.TextField(new Rect(660 * ratio, 350, 90 * ratio, 30 * ratio), "Blue : " + players[0].cell_indexes.Count.ToString(), GUI.skin.button);
+		if (GUI.Button(new Rect(10,10,80 * ratio, 80 * ratio), button_playagain))
 		{
 			StopAllCoroutines();
 			reset();
@@ -113,11 +119,11 @@ public class CBattleRoom : MonoBehaviour {
 
 		GUI.BeginGroup(new Rect(0, 0, outline_width, Screen.height));
 		
-		// Draw background to full of the screen.
-		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), this.background);
+		// Draw background to full of the screen.  
+		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), background);
 		
 		// Draw a board(alignment : center).
-		GUI.DrawTexture(new Rect(0, outline_top, outline_width, outline_height), this.game_board);
+		GUI.DrawTexture(new Rect(0, outline_top, outline_width, outline_height), game_board);
 
 		int width = (int)(60 * ratio);
 		int celloutline_width = width * CBattleRoom.COL_COUNT;
@@ -140,20 +146,20 @@ public class CBattleRoom : MonoBehaviour {
 					on_click(index);
 				}
 				
-				if (this.board[index] != short.MaxValue)
+				if (board[index] != short.MaxValue)
 				{
-					int player_index = this.board[index];
-					GUI.DrawTexture(cell_rect, this.img_players[player_index]);
+					int player_index = board[index];
+					GUI.DrawTexture(cell_rect, img_players[player_index]);
 					
-					if (this.current_player_index == player_index)
+					if (current_player_index == player_index)
 					{
-						GUI.DrawTexture(cell_rect, this.focus_cell);
+						GUI.DrawTexture(cell_rect, focus_cell);
 					}
 				}
 				
-				if (this.available_attack_cells.Contains(index))
+				if (available_attack_cells.Contains(index))
 				{
-					GUI.DrawTexture(cell_rect, this.focus_cell);
+					GUI.DrawTexture(cell_rect, focus_cell);
 				}
 				
 				++index;

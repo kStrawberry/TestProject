@@ -24,8 +24,7 @@ public class CGameResult : MonoBehaviour {
         img_bg = Resources.Load("images/graycell") as Texture;
         button_playagain = Resources.Load("images/playagain") as Texture;
         button_exitgame = Resources.Load("images/exitgame") as Texture;
-	battleRoom = GameObject.Find("BattleRoom");
-        //this.gameObject.SetActive(false);
+	    battleRoom = GameObject.Find("BattleRoom");
 
     }
 	// Use this for initialization
@@ -49,11 +48,26 @@ public class CGameResult : MonoBehaviour {
 
         ratio = Screen.width / 800.0f;
 
-        if (GUI.Button(new Rect(10, 10, 80 * ratio, 80 * ratio), this.button_playagain))
+        GUI.enabled = false;        
+        GUI.TextField(new Rect(60 * ratio, 350, 90 * ratio, 30 * ratio), "Red : " + red_count.ToString(), GUI.skin.button);
+        GUI.TextField(new Rect(660 * ratio, 350, 90 * ratio, 30 * ratio), "Blue : " + blue_count.ToString(), GUI.skin.button);
+        GUI.enabled = true;
+
+        GUI.DrawTexture(new Rect(40 * ratio, 380, 128 * ratio, 128 * ratio), img_players[0]);
+        GUI.DrawTexture(new Rect(645 * ratio, 380, 128 * ratio, 128 * ratio), img_players[1]);
+
+        if (GUI.Button(new Rect(10, 10, 80 * ratio, 80 * ratio), button_playagain))
         {
             StopAllCoroutines();
+
             battleRoom.SetActive(true);
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
+
+        if (GUI.Button(new Rect(100, 10, 80 * ratio, 80 * ratio), button_exitgame))
+        {
+            StopAllCoroutines();
+            Application.Quit();
         }
     }
 }
