@@ -11,3 +11,9 @@ UnityVS.TestProject.sln
 UnityVS.TestProject.v12.suo
 Assets/UnityVS
 Assets/UnityVS.meta
+Assets/AssetStoreTools/Labels.asset
+Assets/AssetStoreTools/Labels.asset.meta
+Temp
+UnityVS.Project.CSharp.csproj
+UnityVS.Project.sln
+UnityVS.Project.v11.suo
