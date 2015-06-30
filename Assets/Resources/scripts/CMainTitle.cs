@@ -17,12 +17,20 @@ public class CMainTitle : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		if (Input.GetMouseButtonDown(0))
 		{
             this.battleroom.SetActive(true);
             gameObject.SetActive(false);
 		}
+
+        // [6/30/2015 kain0024] 플렛폼이 안드로이드면
+        if(Application.platform == RuntimePlatform.Android)
+        {
+            if(Input.GetKeyDown(KeyCode.Escape) )
+                Application.Quit();
+        }
 	}
 	
 	void OnGUI()

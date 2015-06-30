@@ -23,6 +23,8 @@ public class CBattleRoom : MonoBehaviour {
 
     GameObject gameResult;
 
+    GUIStyle listStyle = null;
+
 	void Awake()
 	{
 		table_board = new List<short>();
@@ -52,8 +54,7 @@ public class CBattleRoom : MonoBehaviour {
         if(gameResult != null)
             gameResult.SetActive(false);
 
-		reset ();
-
+		reset ();       
         
 	}    
 	
@@ -95,14 +96,36 @@ public class CBattleRoom : MonoBehaviour {
 		
 		GUI.skin = blank_skin;
 		draw_board();
+        GUI.skin = null;
 
-        GUI.TextField(new Rect(40 * ratio, 350, 90 * ratio, 30 * ratio), "Red : " + players[1].cell_indexes.Count.ToString(), GUI.skin.button);
-        GUI.TextField(new Rect(660 * ratio, 350, 90 * ratio, 30 * ratio), "Blue : " + players[0].cell_indexes.Count.ToString(), GUI.skin.button);
+        if (listStyle == null)
+        {
+            listStyle = new GUIStyle(GUI.skin.box);
+            listStyle.fontSize = 15;
+            listStyle.normal.textColor = Color.white;
+        }
+
+        listStyle.fontSize = (int)(15.0f *ratio);
+
+        GUI.TextField(new Rect(40 * ratio, 335, 90 * ratio, 30 * ratio), "Red : " + players[1].cell_indexes.Count.ToString(), listStyle);
+        GUI.TextField(new Rect(660 * ratio, 335, 90 * ratio, 30 * ratio), "Blue : " + players[0].cell_indexes.Count.ToString(), listStyle);
+
+        GUILayout.BeginHorizontal();
 		if (GUI.Button(new Rect(10,10,80 * ratio, 80 * ratio), button_playagain))
 		{
 			StopAllCoroutines();
 			reset();
 		}
+        
+        //GUILayout.Label("", GUILayout.Width(100));
+
+        GUILayout.Space(100 * ratio);
+        if (GUILayout.Button("Undo", GUILayout.Width(80 * ratio), GUILayout.Height(80 * ratio)))
+        {
+            UndoPlay();
+        }
+
+        GUILayout.EndHorizontal();
 	}
 	
 	void draw_board()
@@ -133,12 +156,12 @@ public class CBattleRoom : MonoBehaviour {
 			ver_center-half_celloutline_width + outline_top, celloutline_width, celloutline_width));
 		
 		short index = 0;
-		for (int row=0; row<CBattleRoom.COL_COUNT; ++row)
+		for (int row=0; row < CBattleRoom.COL_COUNT; ++row)
 		{
-			int gap_y = 0;//(row * 1);
-			for (int col=0; col<CBattleRoom.COL_COUNT; ++col)
+			int gap_y = 0;
+			for (int col=0; col < CBattleRoom.COL_COUNT; ++col)
 			{
-				int gap_x = 0;//(col * 1);
+				int gap_x = 0;
 				
 				Rect cell_rect = new Rect(col * width + gap_x, row * width + gap_y, width, width);
 				if (GUI.Button(cell_rect, ""))
@@ -308,10 +331,6 @@ public class CBattleRoom : MonoBehaviour {
 		this.available_attack_cells.Clear();
 	}
 	
-	//IEnumerator moving()
-	//{
-	//}
-	
 	IEnumerator reproduce(short cell)
 	{
 		CPlayer current_player = this.players[this.current_player_index];
@@ -342,4 +361,10 @@ public class CBattleRoom : MonoBehaviour {
 	{
 		return this.players[this.current_player_index].cell_indexes.Exists(obj => obj == cell);
 	}
+
+    //--------------------------------------------------------------------------------------------------------
+    void UndoPlay()
+    {
+
+    }
 }
