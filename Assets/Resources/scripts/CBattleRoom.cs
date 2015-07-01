@@ -16,6 +16,7 @@ public class CBattleRoom : MonoBehaviour {
 	
 	Texture focus_cell;
 	Texture button_playagain;
+    Texture button_undo;
 	
 	List<short> available_attack_cells;
 	byte current_player_index;
@@ -39,6 +40,8 @@ public class CBattleRoom : MonoBehaviour {
 		img_players.Add(Resources.Load("images/red") as Texture);
 		
 		button_playagain = Resources.Load("images/playagain") as Texture;
+        button_undo = Resources.Load("images/undo") as Texture;
+        
 		
 		players = new List<CPlayer>();
 		for (byte i=0; i<2; ++i)
@@ -110,22 +113,19 @@ public class CBattleRoom : MonoBehaviour {
         GUI.TextField(new Rect(40 * ratio, 335, 90 * ratio, 30 * ratio), "Red : " + players[1].cell_indexes.Count.ToString(), listStyle);
         GUI.TextField(new Rect(660 * ratio, 335, 90 * ratio, 30 * ratio), "Blue : " + players[0].cell_indexes.Count.ToString(), listStyle);
 
-        GUILayout.BeginHorizontal();
+       
 		if (GUI.Button(new Rect(10,10,80 * ratio, 80 * ratio), button_playagain))
 		{
 			StopAllCoroutines();
 			reset();
 		}
-        
-        //GUILayout.Label("", GUILayout.Width(100));
 
-        GUILayout.Space(100 * ratio);
-        if (GUILayout.Button("Undo", GUILayout.Width(80 * ratio), GUILayout.Height(80 * ratio)))
+        if (GUI.Button(new Rect(100 * ratio, 10, 80 * ratio, 80 * ratio), button_undo))
         {
+            StopAllCoroutines();
             UndoPlay();
         }
-
-        GUILayout.EndHorizontal();
+       
 	}
 	
 	void draw_board()

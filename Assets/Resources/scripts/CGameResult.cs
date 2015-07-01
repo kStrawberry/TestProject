@@ -32,7 +32,7 @@ public class CGameResult : MonoBehaviour {
 	
 	}   
 	
-    public void SetPlayerCellCount(int red, int blue)
+    public void SetPlayerCellCount(int blue, int red)
     {
         red_count = red;
         blue_count = blue;
@@ -48,9 +48,14 @@ public class CGameResult : MonoBehaviour {
 
         ratio = Screen.width / 800.0f;
 
+        if (red_count < blue_count)
+            GUILayout.Label("You Win", GUILayout.Width(100), GUILayout.Height(30) );
+        else
+            GUILayout.Label("You Lose", GUILayout.Width(100), GUILayout.Height(30));
+
         GUI.enabled = false;        
-        GUI.TextField(new Rect(60 * ratio, 350, 90 * ratio, 30 * ratio), "Red : " + red_count.ToString(), GUI.skin.button);
-        GUI.TextField(new Rect(660 * ratio, 350, 90 * ratio, 30 * ratio), "Blue : " + blue_count.ToString(), GUI.skin.button);
+        GUI.TextField(new Rect(60 * ratio, 350, 90 * ratio, 30 * ratio), "Blue : " + blue_count.ToString(), GUI.skin.button);
+        GUI.TextField(new Rect(660 * ratio, 345, 90 * ratio, 30 * ratio), "Red : " + red_count.ToString(), GUI.skin.button);
         GUI.enabled = true;
 
         GUI.DrawTexture(new Rect(40 * ratio, 380, 128 * ratio, 128 * ratio), img_players[0]);
@@ -64,7 +69,7 @@ public class CGameResult : MonoBehaviour {
             gameObject.SetActive(false);
         }
 
-        if (GUI.Button(new Rect(100, 10, 80 * ratio, 80 * ratio), button_exitgame))
+        if (GUI.Button(new Rect(100 * ratio, 10, 80 * ratio, 80 * ratio), button_exitgame))
         {
             StopAllCoroutines();
             Application.Quit();
